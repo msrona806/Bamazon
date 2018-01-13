@@ -1,5 +1,6 @@
 // REQUIRED Packages
 var mysql = require("mysql");
+var table = require("")
 
 // connection to database
 var connection = mysql.createConnection({
@@ -20,7 +21,24 @@ connection.connect(function(err) {
   connection.end();
 });
 
-// Take customer order
+// Take customer order:
+// function
+function customerOrder() {
+  inquirer.prompt([
+    {
+      name: "itemId",
+      message: "Which item would you like to purchase?"
+    },
+    { 
+      name: "stockQty",
+      message: "How many would you like?"
+    }
+
+
+    
+
+  ])
+}
 
 // Decrement stock from store inventory
 
