@@ -71,11 +71,12 @@ function customerOrder() {
         console.log(chalk.magentaBright("Your total is: ") + userReq.stockQty * itemCost);
         // updateStock(userReq.stockQty, userReq.itemId)
         buyMore(); 
-
       }  
-    })
-  })
+    });  
+  });
 }
+
+ 
 
 // See if user wants to continue shopping
 function buyMore() {
@@ -88,8 +89,9 @@ function buyMore() {
   ).then(function(answer) {
     // if the answer is yes, run customer order
     if (answer.continue === true) {
-      updateStock();
+      updateStock(userReq.stockQty, userReq.itemId);
       products();
+
     }
     else {
       process.exit(0);
@@ -98,12 +100,13 @@ function buyMore() {
 }
 
 // Decrement stock from store inventory:
-function updateStock (qty, id) {
+ function updateStock (qty, id) {
   connection.query('UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?', [qty, id], function(err, res){
-  });  
-} 
+  }); console.log(qty + id);
+}
+
 // function to end connection, when user quits
-function leaveStore(choice) {
+  function leaveStore(choice) {
   if (choice == "Q") {
     process.exit(0);
   }
