@@ -2,6 +2,9 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var table = require("console.table");
+const chalk = require("chalk");
+const chalkAnimation = require("chalk-animation");
+chalkAnimation.rainbow("Welcome to Bamazon!!!", 1);
 
 // connection to database
 var connection = mysql.createConnection({
@@ -18,7 +21,6 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if (err) throw err;
-  console.log("connected as id " + connection.threadId + "\n");
   products();
 });
 
@@ -28,6 +30,7 @@ connection.connect(function(err) {
 function products() {
   connection.query('SELECT * FROM products', function(err, res) {
     console.table(res);
+    console.log(chalk.yellow("***Enter 'Q' and press enter twice to exit store***"));
     customerOrder();
   });
 }
@@ -59,20 +62,19 @@ function customerOrder() {
             stockInv = res[i].stock_quantity;
             itemCost = res[i].price;
           }
-          // Give an error msg if ordering more than in stock
+          // Give an error msg if ordering more than in stockgit 
           if (stockInv < parseInt(userReq.stockQty)) {
             console.log("You cannot buy more than we have! Choose again");
             products();
           }
           // Shows customer their total for items ordered
           else {
-            console.log("Your total is: " + userReq.stockQty * itemCost);
+            console.log(chalk.magentaBright("Your total is: ") + userReq.stockQty * itemCost);
             updateStock(userReq.stockQty, userReq.itemId)}
+            products(); 
           })
-          products();
-      })
-
-    }
+        })
+      }
 
 // Decrement stock from store inventory:
 function updateStock (qty, id) {
