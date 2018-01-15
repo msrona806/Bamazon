@@ -40,8 +40,8 @@ function menu() {
   inquirer.prompt ({
       name: 'menuItems',
       type: 'list',
-      message: 'What would you like to do? Choose from an item from the list:',
-      choices: ['View Products', "View Low Inventory"]
+      message: (chalk.white('What would you like to do? Choose from an item from the list:')),
+      choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product']
     })
   // .then(function(mgrResp) {
   //   console.log(mgrResp.menuItems);
