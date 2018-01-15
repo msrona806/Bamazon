@@ -4,7 +4,6 @@ var inquirer = require("inquirer");
 var table = require("console.table");
 const chalk = require("chalk");
 const chalkAnimation = require("chalk-animation");
-chalkAnimation.rainbow("Welcome to Bamazon!!!", 1);
 
 // connection to database
 var connection = mysql.createConnection({
@@ -21,16 +20,37 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if (err) throw err;
-  products();
+  menu();
 });
 
 // **** FUNCTIONS ****
 
 // Display product table
 function products() {
+  chalkAnimation.rainbow("Welcome to Bamazon!!!", 1);
   connection.query('SELECT * FROM products', function(err, res) {
     console.table(res);
-    console.log(chalk.yellow("***Enter 'Q' and press enter twice to exit store***"));
     connection.end();
+    menu();
   });
 }
+
+// menu options
+function menu() {
+  inquirer.prompt ({
+      name: 'menuItems',
+      type: 'list',
+      message: 'What would you like to do? Choose from an item from the list:',
+      choices: ['View Products', "View Low Inventory"]
+    })
+  // .then(function(mgrResp) {
+  //   console.log(mgrResp.menuItems);
+  // });
+  }
+  
+
+// View products for sale
+
+// View low inventory
+
+// Add new product
