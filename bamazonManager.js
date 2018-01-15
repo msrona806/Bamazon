@@ -25,16 +25,6 @@ connection.connect(function(err) {
 
 // **** FUNCTIONS ****
 
-// Display product table
-function products() {
-  chalkAnimation.rainbow("Welcome to Bamazon!!!", 1);
-  connection.query('SELECT * FROM products', function(err, res) {
-    console.table(res);
-    connection.end();
-    menu();
-  });
-}
-
 // menu options
 function menu() {
   inquirer.prompt ({
@@ -43,14 +33,35 @@ function menu() {
       message: (chalk.white('What would you like to do? Choose from an item from the list:')),
       choices: ['View Products for Sale', 'View Low Inventory', 'Add to Inventory', 'Add New Product']
     })
-  // .then(function(mgrResp) {
-  //   console.log(mgrResp.menuItems);
-  // });
-  }
+  .then(function(mgrResp) {
+    switch (mgrResp.menuItems) {
+      case "View Products for Sale":
+      products();
+      break;
+    
+      case "View Low Inventory":
+      lowInventory();
+      break;
+    } 
+  });  
+}
   
-
 // View products for sale
-
+function products() {
+  chalkAnimation.rainbow("Welcome to Bamazon!!!", 1);
+  connection.query('SELECT * FROM products', function(err, res) {
+    console.table(res);
+    connection.end();
+    menu();
+  });
+}
 // View low inventory
+function lowInventory() {
+  connection.query('SELECT * FROM products WHERE stock_quantity < 10 ', function(err, res) {
+    console.table(res);
+    menu();
+  })
+}
+
 
 // Add new product
