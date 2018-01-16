@@ -43,6 +43,10 @@ function menu() {
       lowInventory();
       break;
 
+      case "Add to Inventory":
+      updateInv();
+      break;
+
       case "Add New Product":
       addProduct();
       break;
@@ -52,9 +56,9 @@ function menu() {
   
 // View products for sale
 function products() {
-  chalkAnimation.rainbow("Welcome to Bamazon!!!", 1);
-  connection.query('SELECT * FROM products', function(err, res) {
-    console.table(res);
+    connection.query('SELECT * FROM products', function(err, res) {
+      chalkAnimation.rainbow("Welcome to Bamazon!!!", 1);
+      console.table(res);
       menu();
   })
 }
@@ -67,7 +71,7 @@ function lowInventory() {
 }
 
 // Add new product
-function addProduct() {
+function addProduct(itemId, product, dept, price, qty) {
   inquirer.prompt([
     {
       name: "itemId",
@@ -98,7 +102,7 @@ function addProduct() {
   .then(function(ans) {
     // Add products to table
     connection.query('INSERT INTO products (item_id, product_name, department_name, price, stock_quantity) VALUES ?',
-      [ans.itemId, ans.product, ans.dept, ans.price, ans.qty],
+      [parseInt(ans.itemId), ans.product, ans.dept, parseInt(ans.price), parseInt(ans.qty)],
       
       function(err, res) {
         if (err) throw err;
@@ -106,4 +110,30 @@ function addProduct() {
         menu();
     })
   });
+}
+
+// Update inventory
+function updateInv() {
+  inquirer.prompt([
+    {
+      name: "item",
+      type: "input",
+      message: "Which item would you like to add inventory to?"
+    },
+    {
+      name: "stockQty",
+      type: "input",
+      message: "How many would you like to add?"
+    }
+  ])
+  .then(function(ans) {
+  connection.query('UPDATE products SET ? WHERE ?', 
+    [stock_quantity = ans.stockQty],
+    [item_id = ans.item],
+     function(error) {
+      if (error) throw err;
+      console.log(ans.item  + "updated");
+      menu();
+    });
+  })
 }
