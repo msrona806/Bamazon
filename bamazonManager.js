@@ -50,6 +50,10 @@ function menu() {
       case "Add New Product":
       addProduct();
       break;
+
+      case chalk.red('Exit'):
+      exitNow();
+      break;
     } 
   });  
 }
@@ -101,9 +105,13 @@ function addProduct(itemId, product, dept, price, qty) {
   ])
   .then(function(ans) {
     // Add products to table
-    connection.query('INSERT INTO products (item_id, product_name, department_name, price, stock_quantity) VALUES ?',
-      [parseInt(ans.itemId), ans.product, ans.dept, parseInt(ans.price), parseInt(ans.qty)],
-      
+    connection.query('INSERT INTO products SET ?', {
+      item_id: ans.itemId,
+      product_name: ans.product, 
+      department_name: ans.dept, 
+      price: ans.price, 
+      stock_quantity: ans.qty
+    },
       function(err, res) {
         if (err) throw err;
         console.log("added!");
@@ -118,7 +126,7 @@ function updateInv() {
     {
       name: "item",
       type: "input",
-      message: "Which item would you like to add inventory to?"
+      message: "Enter item id for product you would like to add inventory to?"
     },
     {
       name: "stockQty",
@@ -127,13 +135,20 @@ function updateInv() {
     }
   ])
   .then(function(ans) {
-  connection.query('UPDATE products SET ? WHERE ?', 
-    [stock_quantity = ans.stockQty],
-    [item_id = ans.item],
-     function(error) {
-      if (error) throw err;
-      console.log(ans.item  + "updated");
-      menu();
-    });
-  })
+    var item = connection.query('SELECT product_name WHERE item_id ?', [ans.item] )
+    connection.query('UPDATE products SET ? WHERE ?', 
+      [{ stock_quantity: ans.stockQty},
+        {item_id: ans.item}],
+      function(error) {
+        if (error) throw err;
+        console.log();
+        menu();
+      });
+    })
+  }
+
+// Exit program
+function exitNow() {
+  process.exit(0);
+  console.log('See ya next time!');
 }
