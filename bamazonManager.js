@@ -134,15 +134,16 @@ function updateInv() {
     }
   ])
   .then(function(ans) {
-    var item = connection.query('SELECT product_name WHERE item_id ?', [ans.item] )
+    // var itemName = connection.query('SELECT product_name WHERE item_id ?', [ans.item] )
     connection.query('UPDATE products SET ? WHERE ?', 
       [{ stock_quantity: ans.stockQty},
         {item_id: ans.item}],
       function(error) {
         if (error) throw err;
-        console.log();
+        console.log("Quatity updated");
+       lowInventory();
         menu();
-      });
+      })
     })
   }
 

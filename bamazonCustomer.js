@@ -64,13 +64,13 @@ function customerOrder() {
       // Give an error msg if ordering more than in stockgit 
       if (stockInv < parseInt(userReq.stockQty)) {
         console.log(chalk.red("You cannot buy more than we have!"));
-        buyMore();
+        buyMore(userReq.stockQty, userReq.itemId);
       }
       // Shows customer their total for items ordered
       else {
         console.log(chalk.magentaBright("Your total is: ") + userReq.stockQty * itemCost);
         // updateStock(userReq.stockQty, userReq.itemId)
-        buyMore(); 
+        buyMore(userReq.stockQty, userReq.itemId); 
       }  
     });  
   });
@@ -79,7 +79,7 @@ function customerOrder() {
  
 
 // See if user wants to continue shopping
-function buyMore() {
+function buyMore(qty, id) {
   inquirer.prompt(
     {
       name: "continue",
@@ -89,7 +89,7 @@ function buyMore() {
   ).then(function(answer) {
     // if the answer is yes, run customer order
     if (answer.continue === true) {
-      updateStock(userReq.stockQty, userReq.itemId);
+      updateStock(qty, id);
       products();
 
     }
