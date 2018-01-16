@@ -3,9 +3,9 @@ An interactive node app. An Amazon-like storefront created with MySQL and Node.J
 
 ## Customer App
 The app will take in orders from customers and deplete stock from the store's inventory. Users cannot purchase more than what is available in stock.
-![Bamazon](liriAppCommands.gif)
+![Bamazon](bamazonCustomer.gif)
 
 
 
-## Author
+### Author
 Sharona Young
