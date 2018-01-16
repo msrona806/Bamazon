@@ -21,7 +21,7 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   menu();
-});
+  });
 
 // **** FUNCTIONS ****
 
@@ -61,7 +61,6 @@ function menu() {
 // View products for sale
 function products() {
     connection.query('SELECT * FROM products', function(err, res) {
-      chalkAnimation.rainbow("Welcome to Bamazon!!!", 1);
       console.table(res);
       menu();
   })
