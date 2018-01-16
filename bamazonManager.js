@@ -113,7 +113,7 @@ function addProduct(itemId, product, dept, price, qty) {
     },
       function(err, res) {
         if (err) throw err;
-        console.log("added!");
+        console.log(ans.itemId + " added!");
         menu();
     })
   });
@@ -136,12 +136,12 @@ function updateInv() {
   .then(function(ans) {
     // var itemName = connection.query('SELECT product_name WHERE item_id ?', [ans.item] )
     connection.query('UPDATE products SET ? WHERE ?', 
-      [{ stock_quantity: ans.stockQty},
+      [{ stock_quantity: ans.stockQty },
         {item_id: ans.item}],
       function(error) {
         if (error) throw err;
         console.log("Quatity updated");
-       lowInventory();
+        lowInventory();
         menu();
       })
     })
